@@ -1,0 +1,358 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DimQuiz Platform</title>
+</head>
+<body onload="getStarted()">
+    <div class="app-container">
+        <div id="game" class="quiz-options flex-column">
+          <h2 class="question-section">What is the answer to this questions?</h2>
+          
+        <div class="answer" data-index="" onclick="answer(event, 'a', 0)">
+                
+        </div>
+        <div class="answer" data-index=""  onclick="answer(event, 'b', 1)">
+            
+        </div>
+        <div class="answer" data-index=""  onclick="answer(event, 'c', 2)">
+            
+        </div>
+        <div class="answer" data-index=""  onclick="answer(event, 'd', 3)">
+            
+        </div>
+
+        <hr style="margin-top: 90px">
+
+        <div class="timer-score">
+            <div class="timer">Time Left:</div>
+            <div>Points:<span class="score">0</span></div>
+        </div>
+    </div>
+
+
+   
+        
+    <div class="right-wrong-popup">
+        <div class="answer-popup">Correct</div>
+    </div>
+
+
+<style>
+
+:root {
+            --default-color: #394D91;
+            --white: white;
+            --black: #222222;
+            --blue: #003A6F;
+            --red: #A50F15;
+            --pink: #ff5959;
+        }
+
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f2f1f1;
+
+        }
+
+        .app-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+
+
+        .timer-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--pink);
+            width: 90%;
+            margin: 20;
+            padding-top: 20px;
+        }
+
+
+        .answer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            background-color: var(--white);
+            border-radius: 30px;
+            border: solid 1px #56a5eb;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0px;
+        }
+
+        .question-section{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .button-pressed{
+            background-color: #6EC5E9;
+            color: #000;
+        }
+
+        .right-wrong-popup{
+            width: 100%;
+            position: absolute;
+            bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .answer-popup{
+            background-color: var(--black);
+            color: white;
+            width: 20%;
+            position: relative;
+            text-align: center;
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0px 4px 8px 2px #0000004d;
+        }
+
+        .correct {
+            background-color: var(--blue);
+            color: white;
+        }
+
+        .wrong {
+            background-color: var(--red);
+            color: white;
+        }
+
+</style>
+
+<script>
+    
+let chosenAnswer = false;
+
+let interval;
+
+    let score = 0;
+    let scoreCont = document.querySelector(".score");
+    
+
+    function data (){
+        return [
+            {
+                question: "What is the capital of Germany",
+                a: "frankfurt",
+                b: "Paderbon",
+                c: "Berlin",
+                d: "West-Rhine Philia",
+                correct: "Berlin"
+            },
+            {
+                question: "What is the capital of colombia",
+                a: "Bogota",
+                b: "Lima",
+                c: "Curacao",
+                d: "Santiago",
+                correct: "Bogota"
+            },
+            {
+                question: "What is the capital of Brazil",
+                a: "Rio de Janeiro",
+                b: "Buenos Aires",
+                c: "Brazilia",
+                d: "Montevideo",
+                correct: "Brazilia"
+            },
+            {
+                question: "What is the capital of Japan",
+                a: "Seoul",
+                b: "Okazaki",
+                c: "Tokyo",
+                d: "Hong Kong",
+                correct: "Tokyo"
+            },
+            {
+                question: "What is the capital of Finland",
+                a: "Helsinki",
+                b: "Stockholm",
+                c: "Belgrade",
+                d: "Oslo",
+                correct: "Helsinki"
+            },
+            {
+                question: "What is the capital of Morocco",
+                a: "Algiers",
+                b: "Rabat",
+                c: "Dakar",
+                d: "Sudan",
+                correct: "Rabat"
+            },
+            {
+                question: "What is the capital of Bosnia",
+                a: "Sarajevo",
+                b: "Kyiv",
+                c: "Baku",
+                d: "Azerbajan",
+                correct: "Sarajevo"
+            },
+        ]
+    }
+
+    function getStarted() {
+
+        this.quizTimer();
+
+        let hidePopup = document.querySelector (".right-wrong-popup");
+        hidePopup.style.display= "none";
+
+
+        let question = document.querySelector (".question-section");
+        let timer = document.querySelector (".timer")
+
+
+        let data = this.data();
+
+        let randomQuestion= Math.floor(Math.random() * data.length); 
+        question.innerHTML = data[randomQuestion].question;
+
+        question.setAttribute("data-index", randomQuestion);
+
+        let answers = document.querySelectorAll(".answer");
+        answers.forEach((answer, index) => {
+            if(index === 0){
+                answer.innerHTML = data[randomQuestion].a;
+            }
+            if(index === 1){
+                answer.innerHTML = data[randomQuestion].b;
+            }
+            if(index === 2){
+                answer.innerHTML = data[randomQuestion].c;
+            }
+            if(index === 3){
+                answer.innerHTML = data[randomQuestion].d;
+            }
+            
+        }) 
+
+    }
+
+    function quizTimer() {
+
+        clearInterval(interval); //Toluwalase - I added this
+        let count = 15;
+// let questionTimer = 10;
+// Toluwalase - I removed let
+    interval = setInterval (function() {
+    document.querySelector(".timer").innerHTML ="Time Left: " + count + " secs ";
+    count--;
+    if (count < 0){
+    clearInterval (interval);
+    // document.querySelector(".timer").innerHTML = 'OOOOOOPS! Next Question';
+
+    alert ("You failed to answer on time, move to the next question");
+    this.getStarted();
+
+    }
+}
+, 1000);
+}
+
+
+    // if (count <= questionTimer){
+    //     timer.style.display="block";
+    //     timer.innerHTML = count;
+    //     count++;
+    // }
+
+
+
+
+    function answer (event, value, index){
+
+        if(chosenAnswer === false){
+        
+            chosenAnswer = true;
+
+        let allAnswers = document.querySelectorAll(".answer");
+        allAnswers.forEach((answer, answerIndex) => {
+                allAnswers[answerIndex].classList.remove("button-pressed");
+            })
+
+            event.target.classList.add("button-pressed");
+
+            setTimeout( () => this.getAnswer(event.target), 800)
+
+        }
+
+    }
+
+
+
+
+    function getAnswer (selectedAnswer){
+
+        let data = this.data(); 
+
+        let question = document.querySelector(".question-section");
+
+        let index = question.getAttribute("data-index");
+
+        let correctAnswer = data[index].correct;
+
+        let answerPopup = document.querySelector(".answer-popup");
+
+        selectedAnswer.classList.remove("button-pressed");
+
+if(selectedAnswer.innerHTML === correctAnswer){
+    selectedAnswer.classList.add("correct");
+    answerPopup.classList.remove("wrong");
+    answerPopup.classList.add("correct");
+    answerPopup.innerHTML = "Correct";
+    score = score+10;
+    scoreCont.innerHTML = score;
+
+} else {
+    selectedAnswer.classList.add("wrong");
+
+    answerPopup.classList.remove("correct");
+    answerPopup.classList.add("wrong");
+    answerPopup.innerHTML = "Wrong";
+}
+
+document.querySelector(".right-wrong-popup").style.display = "flex";
+
+setTimeout(()=>{
+    document.querySelector(".right-wrong-popup").style.display = "none";
+
+    selectedAnswer.classList.remove("wrong");
+    selectedAnswer.classList.remove("correct");
+
+    chosenAnswer = false;
+    
+    this.getStarted();
+
+}, 1500);
+
+}
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

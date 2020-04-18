@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Quiz App</title>
+</head>
+<body>
+    
+    <div class="app-container">
+            <div id="home" class="splash-screen flex-column">
+              <h1> Welcome to DimQuiz</h1>
+              <a class="button" href="/quizpage.html">Play</a>
+              <a class="button" href="/highscores.html">High Scores</a>
+            </div>
+            
+    
+
+
+
+
+
+
+
+
+    </div>
+
+<style>
+
+body{
+
+    background-color: #f2f1f1;
+
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 34px;
+  color: #56a5eb;
+  margin-bottom: 20;
+}
+
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.splash-screen{
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+  width: 20rem;
+  text-align: center;
+  border: 0.1rem solid #56a5eb;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: #56a5eb;
+  background-color: white;
+}
+
+.button:hover {
+  cursor: pointer;
+  box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+  transform: translateY(-0.1rem);
+  transition: transform 150ms;
+}
+
+.button[disabled]:hover {
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+</style>
+
+</body>
+</html>
